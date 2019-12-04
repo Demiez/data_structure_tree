@@ -1,6 +1,7 @@
 import React from 'react';
 import Node from './components/NodeConstructor';
 import Tree from './components/TreeConstructor';
+import primsAlgorithm from './components/PrimsAlgorithm';
 
 class TreeClass extends React.Component {
     constructor(props){
@@ -35,9 +36,6 @@ class TreeClass extends React.Component {
 
         tree._root.children[2].children.push(new Node('seven'));
         tree._root.children[2].children[0].parent = tree._root.children[2];
-
-        //tree._root.children[2].children.push(new Node('eight'));
-        //tree._root.children[2].children[1].parent = tree._root.children[2];
 
         return tree;
     };
@@ -119,15 +117,35 @@ class TreeClass extends React.Component {
         return tree;
     };
 
+    // Implementation of Prim's algorithm for MST and traverse (tasks 3,4)
+    applyPrimsAlgorithm() {
+        // we will represent graph vertices as numbers - 1
+        const one = 0, two = 1, three = 2, four = 3, five = 4, six = 5;
+        // add edges with weights
+        const graph = [
+            [one,two,2],
+            [one,three,3],
+            [two,four,3],
+            [two,three,5],
+            [two,five,4],
+            [three,five,4],
+            [four,five,2],
+            [four,six,3],
+            [five,six,5]
+        ];
+        // pass N of vertices and the graph to run prims algorithm
+        console.log("Using Prim's Algorithm: \n", primsAlgorithm(6, graph));
+    }
+
     render() {
         const {tree} = this.state;
         console.log(tree);
 
-        console.log("Using TDF Algorithm: \n\n");
+        console.log("Using DFT Algorithm: \n\n");
         this.traverseDeepFirst(tree);
         console.log(`Current height of tree in state: ${this.treeHeightCounter}`);
 
-        console.log("Using TBF Algorithm: \n\n");
+        console.log("Using BFT Algorithm: \n\n");
         this.traverseBreadthFirst(tree);
 
         this.addChild('nine', 'two');
@@ -135,6 +153,8 @@ class TreeClass extends React.Component {
 
         this.removeChild('nine');
         console.log("Checking state:", this.state.tree);
+
+        this.applyPrimsAlgorithm();
 
         return (
             <h2>please check console [ctrl+shift+I or F12], then F5 to see extended object notations</h2>
