@@ -36,6 +36,9 @@ class TreeClass extends React.Component {
         tree._root.children[2].children.push(new Node('seven'));
         tree._root.children[2].children[0].parent = tree._root.children[2];
 
+        //tree._root.children[2].children.push(new Node('eight'));
+        //tree._root.children[2].children[1].parent = tree._root.children[2];
+
         return tree;
     };
 
@@ -67,6 +70,55 @@ class TreeClass extends React.Component {
         }
     };
 
+    addChild = (data, to) => {
+        const {tree} = this.state;
+        const child = new Node(data);
+        function traverse (tree) {
+            for (let node of Object.values(tree)) {
+                if(node.data === to) {
+                    const index = node.children.length;
+                    console.log("Found: => ",node);
+                    node.children.push(child);
+                    node.children[index].parent = node;
+                    console.log("Done: =>", node);
+                    return
+                }
+                Object.entries(node).forEach(([key, node]) => {
+                    if (Array.isArray(node)){
+                        traverse(node)
+                    }
+                });
+            }
+        }
+        traverse(tree);
+        return tree;
+    };
+
+    removeChild = (data) => {
+        const {tree} = this.state;
+        function traverse (tree) {
+            for (let node of Object.values(tree)) {
+                if(node.data === data) {
+                    const children = node.parent.children;
+                    for (let i = 0; i < children.length; i++) {
+                        if (children[i].data === data) {
+                            children.splice(i,1)
+                        }
+                    }
+                    console.log("Removed: =>", data, "from", node.parent);
+                    return
+                }
+                Object.entries(node).forEach(([key, node]) => {
+                    if (Array.isArray(node)){
+                        traverse(node)
+                    }
+                });
+            }
+        }
+        traverse(tree);
+        return tree;
+    };
+
     render() {
         const {tree} = this.state;
         console.log(tree);
@@ -77,6 +129,12 @@ class TreeClass extends React.Component {
 
         console.log("Using TBF Algorithm: \n\n");
         this.traverseBreadthFirst(tree);
+
+        this.addChild('nine', 'two');
+        console.log("Checking state:", this.state.tree);
+
+        this.removeChild('nine');
+        console.log("Checking state:", this.state.tree);
 
         return (
             <h2>please check console [ctrl+shift+I or F12], then F5 to see extended object notations</h2>
