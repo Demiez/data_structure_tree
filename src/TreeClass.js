@@ -10,7 +10,7 @@ class TreeClass extends React.Component {
         };
     }
 
-    componentDidMount() {
+    UNSAFE_componentWillMount() {
         this.setState({
             tree: {...this.constructDefaultTree()}
         })
@@ -56,12 +56,27 @@ class TreeClass extends React.Component {
         }
     };
 
+    traverseBreadthFirst = (tree) => {
+        for (let node of Object.values(tree)) {
+                Object.entries(node).forEach(([key, node]) => {
+                    if (Array.isArray(node)){
+                        node.map(item => console.log(item))
+                        this.traverseBreadthFirst(node)
+                    }
+                });
+        }
+    };
+
     render() {
         const {tree} = this.state;
         console.log(tree);
 
+        console.log("Using TDF Algorithm: \n\n");
         this.traverseDeepFirst(tree);
         console.log(`Current height of tree in state: ${this.treeHeightCounter}`);
+
+        console.log("Using TBF Algorithm: \n\n");
+        this.traverseBreadthFirst(tree);
 
         return (
             <h2>please check console [ctrl+shift+I or F12]</h2>
