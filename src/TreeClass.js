@@ -79,7 +79,7 @@ class TreeClass extends React.Component {
         this.traverseBreadthFirst(tree);
 
         return (
-            <h2>please check console [ctrl+shift+I or F12]</h2>
+            <h2>please check console [ctrl+shift+I or F12], then F5 to see extended object notations</h2>
         )
     }
 }
